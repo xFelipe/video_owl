@@ -5,17 +5,26 @@ import shutil
 
 @pytest.fixture
 def watch():
-    from ..modules import watch
-    if not watch.DOWNLOAD_FOLDER.endswith('temp_tests'):
-        watch.DOWNLOAD_FOLDER = os.path.join('.', 'temp_downloads')
-    delete_downloaded_files(watch)
+    from ..app import watch
+    watch.DOWNLOAD_FOLDER = os.path.join('.', 'temp_downloads')
+    delete_downloads(watch)
     yield watch
-    delete_downloaded_files(watch)
+    delete_downloads(watch)
 
+@pytest.fixture
+def database():
+    from ..app import database
+    delete_db(database)
+    yield database
+    delete_db(database)
 
-def delete_downloaded_files(watch):
+def delete_downloads(watch):
     if os.path.exists(watch.DOWNLOAD_FOLDER):
-        for temp_file_name in os.listdir(watch.DOWNLOAD_FOLDER):
-            temp_file_path = os.path.join(watch.DOWNLOAD_FOLDER, temp_file_name)
-            os.remove(temp_file_path)
+        for tmp_file_name in os.listdir(watch.DOWNLOAD_FOLDER):
+            tmp_file_path = os.path.join(watch.DOWNLOAD_FOLDER, tmp_file_name)
+            os.remove(tmp_file_path)
         os.rmdir(watch.DOWNLOAD_FOLDER)
+
+def delete_db(database):
+    if os.path.isfile(database.DB_PATH):
+        os.remove(database.DB_PATH)
