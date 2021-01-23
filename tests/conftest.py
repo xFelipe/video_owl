@@ -1,7 +1,5 @@
 import pytest
 import os
-import shutil
-
 
 @pytest.fixture
 def watch():
@@ -13,10 +11,16 @@ def watch():
 
 @pytest.fixture
 def database():
-    from ..app import database
+    from app import database
     delete_db(database)
     yield database
+    database.db_session.rollback()
     delete_db(database)
+
+@pytest.fixture
+def models():
+    from app import models
+    yield models
 
 def delete_downloads(watch):
     if os.path.exists(watch.DOWNLOAD_FOLDER):

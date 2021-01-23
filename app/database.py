@@ -21,7 +21,7 @@ Base.query = db_session.query_property()
 
 def init_db():
     from app import models
-    Base.metadata.create_all(bind=engine)
+    models.Base.metadata.create_all(bind=engine)
 
 
 if '__main__' == __name__:

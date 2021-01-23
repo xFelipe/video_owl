@@ -5,6 +5,7 @@ with open('README.md') as fh:
 
 setuptools.setup(
     name='Video Owl',
+    packages=setuptools.find_packages(),
     version='0.1',
     author='Felipe Gomes Duarte',
     author_email='xfelipegd@gmail.com',
